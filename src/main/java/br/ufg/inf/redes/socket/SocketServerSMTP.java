@@ -9,7 +9,7 @@ import br.ufg.inf.redes.interpretador.Interpretador;
 
 public class SocketServerSMTP {
 
-	private static final int PORTA = 25;
+	private static final int PORTA = 14440;
 	private byte[] buffer = new byte[1024];
 	private static Interpretador interpretador = new Interpretador();
 	private DatagramSocket socketServidor;
