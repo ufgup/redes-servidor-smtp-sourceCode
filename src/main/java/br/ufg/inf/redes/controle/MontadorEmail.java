@@ -1,6 +1,7 @@
 package br.ufg.inf.redes.controle;
 
 import br.ufg.inf.redes.entidades.Email;
+import br.ufg.inf.redes.persistencia.GeradorProperties;
 
 public class MontadorEmail {
 
@@ -26,7 +27,15 @@ public class MontadorEmail {
 			mail.setMensagem(argumento);
 			break;
 		case "SEND":
-			/* Aqui chama a fun&ccedil;&atilde;o do envio de email */
+			if( mail.estaProntoParaEnviar() ) {
+				if( mail.identificarDominio( mail.getDestinatario() ) ) {
+					GeradorProperties gp = new GeradorProperties();
+					gp.gravarLocal(mail);
+				}
+				else {
+					// aqui vai reencaminhar para o proximo servidor SMTP.
+				}
+			}
 			break;
 		default:
 			throw new Exception("Comando desconhecido!");
