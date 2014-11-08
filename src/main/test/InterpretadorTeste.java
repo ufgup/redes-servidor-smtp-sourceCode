@@ -65,7 +65,7 @@ public class InterpretadorTeste {
 	}
 	
 	@Test
-	public void extrairValorOperacao() {
+	public void extrairValorOperacaoTest() {
 		String valorOperacao;
 		try {
 			valorOperacao = getInterpretador().recuperarValorOperacao("RCPT TO: daniel@gmail.com");
@@ -94,6 +94,30 @@ public class InterpretadorTeste {
 			throw new AssertionError("Comando inválido", e);
 		}
 	}
+	
+	@Test
+	public void receberComandoValidoTest() {
+		String resposta;
+		
+		resposta = getInterpretador().receberComando("RCPT TO: daniel@gmail.com");
+		assertTrue(resposta.equals(Interpretador.SOCKET_RESPONSE_OK));
+		
+		resposta = getInterpretador().receberComando("MAIL FROM: daniel@gmail.com");
+		assertTrue(resposta.equals(Interpretador.SOCKET_RESPONSE_OK));
+		
+		resposta = getInterpretador().receberComando("SUBJECT: Mensagem bacana");
+		assertTrue(resposta.equals(Interpretador.SOCKET_RESPONSE_OK));
+		
+		String mensagem = "\nOla isso é uma mensagem"
+				+ "\nEssa é mais uma linha só pra zuar seu codigo"
+				+ "\n."
+				+ "\n"
+				+ "\n";
+		resposta = getInterpretador().receberComando("DATA\n"+mensagem);
+		assertTrue(resposta.equals(Interpretador.SOCKET_RESPONSE_OK));
+		
+	}
+	
 	
 	private Interpretador getInterpretador(){
 		return new Interpretador();

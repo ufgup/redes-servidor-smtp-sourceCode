@@ -12,4 +12,8 @@ public enum TipoOperacao {
 	
 	private TipoOperacao(String tipo) {
 	}
+
+	public String valorOriginal() {
+		return this.toString().replace("_", " ");
+	}
 }

@@ -1,4 +1,5 @@
 package br.ufg.inf.redes.interpretador;
+import br.ufg.inf.redes.controle.MontadorEmail;
 import exception.ComandoInvalidoException;
 import exception.ValorOperacaoVazio;
 
@@ -8,7 +9,7 @@ public class Interpretador {
 	private String valorOperacao;
 	private String parametroOperacao;
 	
-	private static String SOCKET_RESPONSE_OK = "OK";
+	public static String SOCKET_RESPONSE_OK = "OK";
 	
 	public String receberComando(String comando){
 		
@@ -16,13 +17,17 @@ public class Interpretador {
 		try {
 			operacao = recuperarOperacao(comando);
 			valorOperacao = recuperarValorOperacao(comando);
-			
+			MontadorEmail montadorEmail = new MontadorEmail();
+			montadorEmail.receberConteudo(operacao.valorOriginal(), valorOperacao);
 			return SOCKET_RESPONSE_OK;
 		} catch (ComandoInvalidoException e) {
 			return "Comando invalido";
 		} catch (ValorOperacaoVazio e) {
 			// TODO Auto-generated catch block
 			return "Valor da operacao " + operacao + " estava vazio";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return "Erro desconhecido. A montagem do e-mail possivelmente falhou.";
 		}
 		
 	}
