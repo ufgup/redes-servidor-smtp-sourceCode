@@ -8,6 +8,8 @@ public enum TipoOperacao {
 	public static String DATA_REGEX = "^DATA.*";
 	
 	private TipoOperacao(int tipo) {
-		
+	}
+	
+	private TipoOperacao(String tipo) {
 	}
 }
