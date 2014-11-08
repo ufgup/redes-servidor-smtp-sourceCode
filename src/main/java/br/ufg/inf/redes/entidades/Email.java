@@ -1,7 +1,7 @@
 package br.ufg.inf.redes.entidades;
 
 /**
- * Classe POJO do objeto Email Contem os atributos necessarios pra qualquer
+ * Classe POJO do objeto Email cont&ecirc;m os atr&iacute;butos necess&aacute;rios pra qualquer
  * mensagem de email
  */
 public class Email {
@@ -19,7 +19,8 @@ public class Email {
 		assunto = null;
 	}
 
-	public Email(String remetente, String destinatario, String mensagem, String assunto) {
+	public Email(String remetente, String destinatario, String mensagem,
+			String assunto) {
 		this.remetente = remetente;
 		this.destinatario = destinatario;
 		this.mensagem = mensagem;
@@ -57,6 +58,19 @@ public class Email {
 
 	public void setAssunto(String assunto) {
 		this.assunto = assunto;
+	}
+
+	/**
+	 * Valida se o email tem, minimamente o remetente, destinatario e um conte&uacute;do
+	 * de texto
+	 */
+	public boolean estaProntoParaEnviar() {
+
+		if (this.remetente != null && this.destinatario != null
+				&& this.mensagem != null)
+			return true;
+
+		return false;
 	}
 
 	@Override
