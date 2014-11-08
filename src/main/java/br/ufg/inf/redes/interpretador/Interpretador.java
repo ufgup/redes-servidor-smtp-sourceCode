@@ -11,6 +11,7 @@ public class Interpretador {
 	
 	public static String SOCKET_RESPONSE_OK = "OK";
 	public static String SEND_COMMAND = "SEND";
+	public static String SOCKET_RESPONSE_HELO = "Hello, sweatie. :)";
 	
 	public String receberComando(String comando){
 		
@@ -18,12 +19,12 @@ public class Interpretador {
 		try {
 			operacao = recuperarOperacao(comando);
 			
-			if (operacao == TipoOperacao.EHLO) {
-				return TipoOperacao.EHLO.toString();
+			if (operacao == TipoOperacao.EHLO || operacao == TipoOperacao.HELO) {
+				return SOCKET_RESPONSE_HELO;
 			}
 			
 			valorOperacao = recuperarValorOperacao(comando);
-			montadorEmail.receberConteudo(operacao.valorOriginal(), valorOperacao);
+			montadorEmail.receberConteudo(operacao.operacaoOriginal(), valorOperacao);
 			if (operacao == TipoOperacao.DATA) {
 				montadorEmail.receberConteudo(SEND_COMMAND, null);
 			}
@@ -105,7 +106,7 @@ public class Interpretador {
 		
 		if (argumentos[1] != null && argumentos[1].length() > 0) {
 			if (operacao ==  TipoOperacao.DATA) {
-				return argumentos[1];
+				return argumentos[1]; //não tente trimmar a DATA
 			}
 			return argumentos[1].trim();
 		}
