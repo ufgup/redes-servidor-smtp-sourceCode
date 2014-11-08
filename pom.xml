@@ -1,8 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>br.ufg.inf.redes</groupId>
-  <artifactId>servidor-smtp</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>Servidor-SMTP</name>
-  <description>Implementacao de um servidor SMTP em JAVA</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.ufg.inf.redes</groupId>
+	<artifactId>servidor-smtp</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Servidor-SMTP</name>
+	<description>Implementacao de um servidor SMTP em JAVA</description>
+	<dependencies>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
+	</dependencies>
 </project>
