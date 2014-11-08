@@ -8,6 +8,7 @@ public class Interpretador {
 	private TipoOperacao operacao;
 	private String valorOperacao;
 	private String parametroOperacao;
+	private MontadorEmail montadorEmail = new MontadorEmail();
 	
 	public static String SOCKET_RESPONSE_OK = "OK";
 	
@@ -17,7 +18,6 @@ public class Interpretador {
 		try {
 			operacao = recuperarOperacao(comando);
 			valorOperacao = recuperarValorOperacao(comando);
-			MontadorEmail montadorEmail = new MontadorEmail();
 			montadorEmail.receberConteudo(operacao.valorOriginal(), valorOperacao);
 			return SOCKET_RESPONSE_OK;
 		} catch (ComandoInvalidoException e) {
