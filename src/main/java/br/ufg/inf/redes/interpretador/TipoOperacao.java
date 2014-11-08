@@ -2,12 +2,8 @@ package br.ufg.inf.redes.interpretador;
 
 public enum TipoOperacao {
 	
-	EHLO(0),
-	HELO(1), 
-	RCPT_TO(2), 
-	MAIL_FROM(3),
-	SUBJECT(4), 
-	DATA(5);
+	EHLO(0), RCPT_TO(1), MAIL_FROM(2),
+	SUBJECT(3), DATA(4);
 	
 	public static String DATA_STARTS_WITH = "DATA";
 	
@@ -17,7 +13,7 @@ public enum TipoOperacao {
 	private TipoOperacao(String tipo) {
 	}
 
-	public String operacaoOriginal() {
+	public String valorOriginal() {
 		return this.toString().replace("_", " ");
 	}
 }
