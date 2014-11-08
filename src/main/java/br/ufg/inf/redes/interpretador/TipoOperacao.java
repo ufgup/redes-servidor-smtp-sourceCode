@@ -2,7 +2,7 @@ package br.ufg.inf.redes.interpretador;
 
 public enum TipoOperacao {
 	
-	RCPT_TO(1), MAIL_FROM(2),
+	EHLO(0), RCPT_TO(1), MAIL_FROM(2),
 	SUBJECT(3), DATA(4);
 	
 	public static String DATA_STARTS_WITH = "DATA";

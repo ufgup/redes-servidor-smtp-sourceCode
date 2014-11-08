@@ -119,6 +119,7 @@ public class InterpretadorTeste {
 	}
 	
 	
+	
 	private Interpretador getInterpretador(){
 		return new Interpretador();
 	}

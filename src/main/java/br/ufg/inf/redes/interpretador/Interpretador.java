@@ -7,18 +7,26 @@ public class Interpretador {
 	
 	private TipoOperacao operacao;
 	private String valorOperacao;
-	private String parametroOperacao;
 	private MontadorEmail montadorEmail = new MontadorEmail();
 	
 	public static String SOCKET_RESPONSE_OK = "OK";
+	public static String SEND_COMMAND = "SEND";
 	
 	public String receberComando(String comando){
 		
 		// tentamos validar a operacao
 		try {
 			operacao = recuperarOperacao(comando);
+			
+			if (operacao == TipoOperacao.EHLO) {
+				return TipoOperacao.EHLO.toString();
+			}
+			
 			valorOperacao = recuperarValorOperacao(comando);
 			montadorEmail.receberConteudo(operacao.valorOriginal(), valorOperacao);
+			if (operacao == TipoOperacao.DATA) {
+				montadorEmail.receberConteudo(SEND_COMMAND, null);
+			}
 			return SOCKET_RESPONSE_OK;
 		} catch (ComandoInvalidoException e) {
 			return "Comando invalido";
@@ -60,7 +68,7 @@ public class Interpretador {
 		
 		String[] argumentos = comando.split(":");
 		if (argumentos[0] != null) {
-			String operacao = argumentos[0].replace(" ", "_").trim().toUpperCase();
+			String operacao = argumentos[0].trim().replace(" ", "_").trim().toUpperCase();
 			try {
 				validarOperacao(operacao);
 				return TipoOperacao.valueOf(operacao);
