@@ -45,17 +45,20 @@ public class Interpretador {
 	}
 
 	/** Com base em um comando bruto, tenta retornar o {@link TipoOperacao} correspondente
-	 * @param comando
+	 * @param comando String comando bruto enviado pelo socket
+	 * @return {@link TipoOperacao} Tipo de operação realizada
 	 *  */
 	public TipoOperacao recuperarOperacao(String comando)  throws ComandoInvalidoException{
+		if (comando.startsWith(TipoOperacao.DATA_STARTS_WITH)) { // O comando de data é diferente
+			return TipoOperacao.DATA;
+		}
+		
 		String[] argumentos = comando.split(":");
 		if (argumentos[0] != null) {
 			String operacao = argumentos[0].replace(" ", "_").trim().toUpperCase();
 			try {
 				validarOperacao(operacao);
-				if (comando.matches(TipoOperacao.DATA_REGEX)) { // O comando de data é diferente
-					return TipoOperacao.DATA;
-				}
+				
 				return TipoOperacao.valueOf(operacao);
 			}
 			catch (Exception e) {
@@ -67,9 +70,31 @@ public class Interpretador {
 		}
 	}
 
-	public String recuperarValorOperacao(String comando) throws ValorOperacaoVazio{
-		String[] argumentos = comando.split(":");
+	/** Recupera o valor da operacao tentada pelo comando 
+	 * @param comando String comando bruto enviado pelo socket
+	 * @return String valor da operação, para montagem da mensagem 
+	 * 	 * 
+	 * @throws ComandoInvalidoException, ValorOperacaoVazio */
+	public String recuperarValorOperacao(String comando) throws ValorOperacaoVazio, ComandoInvalidoException{
+		//tratamento para o DATA
+		if (operacao == null) {
+			operacao = recuperarOperacao(comando);
+		}
+		
+		String[] argumentos = new String[2];
+		
+		if (operacao == TipoOperacao.DATA) {
+			argumentos[0] = "DATA";
+			argumentos[1] = comando.replaceFirst(TipoOperacao.DATA_STARTS_WITH, "");
+		}
+		else {
+			argumentos = comando.split(":");
+		}
+		
 		if (argumentos[1] != null && argumentos[1].length() > 0) {
+			if (operacao ==  TipoOperacao.DATA) {
+				return argumentos[1];
+			}
 			return argumentos[1].trim();
 		}
 		else {

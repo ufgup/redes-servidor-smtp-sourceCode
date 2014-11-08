@@ -22,7 +22,7 @@ public class InterpretadorTeste {
 		
 		// Testes com comandos validos
 		try {
-			interpretador.validarOperacao(comandoValido1);
+			getInterpretador().validarOperacao(comandoValido1);
 		} catch (ComandoInvalidoException e) {
 			throw new AssertionError();
 		}
@@ -30,7 +30,7 @@ public class InterpretadorTeste {
 		/** TODO extender para avaliar um array em vez de uma string, permitindo usar
 		 * todos os comandos conhecidos e uma lista de comandos inváldiso no teste */
 		try {
-			interpretador.validarOperacao(comandoInvalido1);
+			getInterpretador().validarOperacao(comandoInvalido1);
 			throw new AssertionError("Um comando inválido não foi detectado");
 		} catch (ComandoInvalidoException e) {
 			assertTrue(true);
@@ -41,21 +41,21 @@ public class InterpretadorTeste {
 	public void extrairOperacaoTest() {
 		TipoOperacao operacao;
 		try {
-			operacao = interpretador.recuperarOperacao("RCPT TO: daniel@gmail.com");
+			operacao = getInterpretador().recuperarOperacao("RCPT TO: daniel@gmail.com");
 			assertTrue(operacao == TipoOperacao.RCPT_TO);
 			System.out.println("RCPT TO");
-			operacao = interpretador.recuperarOperacao("MAIL FROM: daniel@gmail.com");
+			operacao = getInterpretador().recuperarOperacao("MAIL FROM: daniel@gmail.com");
 			assertTrue(operacao == TipoOperacao.MAIL_FROM);
 			System.out.println("MAIL FROM");
-			operacao = interpretador.recuperarOperacao("SUBJECT: Mensagem bacana");
+			operacao = getInterpretador().recuperarOperacao("SUBJECT: Mensagem bacana");
 			assertTrue(operacao == TipoOperacao.SUBJECT);
 			System.out.println("SUBJECT");
-			operacao = interpretador.recuperarOperacao("DATA"
-					+ "Ola isso é uma mensagem"
-					+ "Essa é mais uma linha só pra zuar seu codigo"
-					+ "."
-					+ ""
-					+ "");
+			operacao = getInterpretador().recuperarOperacao("DATA"
+					+ "\nOla isso é uma mensagem"
+					+ "\nEssa é mais uma linha só pra zuar seu codigo"
+					+ "\n."
+					+ "\n"
+					+ "\n");
 			assertTrue(operacao == TipoOperacao.DATA);
 			System.out.println("DATA");
 		}
@@ -68,12 +68,35 @@ public class InterpretadorTeste {
 	public void extrairValorOperacao() {
 		String valorOperacao;
 		try {
-			valorOperacao = interpretador.recuperarValorOperacao("RCPT TO: daniel@gmail.com");
+			valorOperacao = getInterpretador().recuperarValorOperacao("RCPT TO: daniel@gmail.com");
 			assertTrue(valorOperacao.equals("daniel@gmail.com"));
+			
+			valorOperacao = getInterpretador().recuperarValorOperacao("MAIL FROM: daniel@gmail.com");
+			assertTrue(valorOperacao.equals("daniel@gmail.com"));
+			
+			valorOperacao = getInterpretador().recuperarValorOperacao("SUBJECT: Mensagem bacana");
+			assertTrue(valorOperacao.equals("Mensagem bacana"));
+			
+			String mensagem = "\nOla isso é uma mensagem"
+					+ "\nEssa é mais uma linha só pra zuar seu codigo"
+					+ "\n."
+					+ "\n"
+					+ "\n";
+			valorOperacao = getInterpretador().recuperarValorOperacao("DATA"
+					+ mensagem);
+			
+			assertTrue(valorOperacao.equals(mensagem));
+			
 		}
 		catch (ValorOperacaoVazio e) {
 			throw new AssertionError("Erro o valor da operacao é nulo ou vazio", e);
+		} catch (ComandoInvalidoException e) {
+			throw new AssertionError("Comando inválido", e);
 		}
+	}
+	
+	private Interpretador getInterpretador(){
+		return new Interpretador();
 	}
 
 }
