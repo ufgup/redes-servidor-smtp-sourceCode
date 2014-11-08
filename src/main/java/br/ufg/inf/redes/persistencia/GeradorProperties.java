@@ -8,7 +8,7 @@ import java.util.Properties;
 import br.ufg.inf.redes.entidades.Email;
 import br.ufg.inf.redes.persistencia.utilitarios.PropertiesManipulador;
 
-class GeradorProperties {
+public class GeradorProperties {
 
 	private static final String CAMINHO_PADRAO = "~/emails/";
 	private Properties props;
@@ -18,8 +18,6 @@ class GeradorProperties {
 	}
 
 	public void gravarLocal(Email mail) throws IOException {
-
-		try {
 
 		gerarProperties(mail);
 
@@ -52,9 +50,6 @@ class GeradorProperties {
 		caminho.append(".properties");
 
 		salvarProperties( caminho.toString() );
-		} catch(IOException e) {
-
-		}
 
 	}
 

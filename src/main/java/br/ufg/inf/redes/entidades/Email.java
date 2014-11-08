@@ -1,8 +1,8 @@
 package br.ufg.inf.redes.entidades;
 
 /**
- * Classe POJO do objeto Email cont&ecirc;m os atr&iacute;butos necess&aacute;rios pra qualquer
- * mensagem de email
+ * Classe POJO do objeto Email cont&ecirc;m os atr&iacute;butos
+ * necess&aacute;rios pra qualquer mensagem de email
  */
 public class Email {
 
@@ -61,13 +61,22 @@ public class Email {
 	}
 
 	/**
-	 * Valida se o email tem, minimamente o remetente, destinatario e um conte&uacute;do
-	 * de texto
+	 * Valida se o email tem, minimamente o remetente, destinatario e um
+	 * conte&uacute;do de texto
 	 */
 	public boolean estaProntoParaEnviar() {
 
 		if (this.remetente != null && this.destinatario != null
 				&& this.mensagem != null)
+			return true;
+
+		return false;
+	}
+
+	public boolean identificarDominio(String email) {
+
+		String[] values = email.split("@", 2);
+		if (values[1].equals("grupo8.inf.ufg.br"))
 			return true;
 
 		return false;
