@@ -12,10 +12,11 @@ public class SocketServerSMTP {
 	private static final int PORTA = 25;
 	private byte[] buffer = new byte[1024];
 	private static Interpretador interpretador = new Interpretador();
+	private DatagramSocket socketServidor;
 
-	public void iniciar() throws IOException {
+	private void iniciar() throws IOException {
 
-		DatagramSocket socketServidor = new DatagramSocket( PORTA );
+		socketServidor = new DatagramSocket( PORTA );
 
 		while(true) {
 			DatagramPacket pacoteRecebido = new DatagramPacket(buffer, buffer.length);
@@ -32,6 +33,19 @@ public class SocketServerSMTP {
 
 			DatagramPacket pacoteEnviado = new DatagramPacket(buffer, buffer.length, endereco, porta);
 
+			socketServidor.send(pacoteEnviado);
+
+		}
+	}
+
+	public static void main( String[] args ) {
+		SocketServerSMTP sss = new SocketServerSMTP();
+
+		try {
+			sss.iniciar();
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
