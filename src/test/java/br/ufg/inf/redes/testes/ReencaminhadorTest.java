@@ -1,4 +1,4 @@
-package main.test;
+package br.ufg.inf.redes.testes;
 
 import static org.junit.Assert.assertTrue;
 
