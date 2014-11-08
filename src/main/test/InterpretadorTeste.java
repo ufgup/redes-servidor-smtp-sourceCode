@@ -7,6 +7,7 @@ import org.junit.Test;
 import br.ufg.inf.redes.interpretador.Interpretador;
 import br.ufg.inf.redes.interpretador.TipoOperacao;
 import exception.ComandoInvalidoException;
+import exception.ValorOperacaoVazio;
 
 
 public class InterpretadorTeste {
@@ -30,7 +31,7 @@ public class InterpretadorTeste {
 		 * todos os comandos conhecidos e uma lista de comandos inváldiso no teste */
 		try {
 			interpretador.validarOperacao(comandoInvalido1);
-			throw new AssertionError("Um comando inválido não foi pego");
+			throw new AssertionError("Um comando inválido não foi detectado");
 		} catch (ComandoInvalidoException e) {
 			assertTrue(true);
 		}
@@ -60,6 +61,18 @@ public class InterpretadorTeste {
 		}
 		catch (ComandoInvalidoException e) {
 			throw new AssertionError("Erro ao tentar extrair operacao de um comando valido", e);
+		}
+	}
+	
+	@Test
+	public void extrairValorOperacao() {
+		String valorOperacao;
+		try {
+			valorOperacao = interpretador.recuperarValorOperacao("RCPT TO: daniel@gmail.com");
+			assertTrue(valorOperacao.equals("daniel@gmail.com"));
+		}
+		catch (ValorOperacaoVazio e) {
+			throw new AssertionError("Erro o valor da operacao é nulo ou vazio", e);
 		}
 	}
 
