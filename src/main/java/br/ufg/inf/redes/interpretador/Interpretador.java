@@ -16,7 +16,7 @@ public class Interpretador {
 		try {
 			operacao = recuperarOperacao(comando);
 			valorOperacao = recuperarValorOperacao(comando);
-			validarOperacao(comando);
+			
 			return SOCKET_RESPONSE_OK;
 		} catch (ComandoInvalidoException e) {
 			return "Comando invalido";
@@ -58,7 +58,6 @@ public class Interpretador {
 			String operacao = argumentos[0].replace(" ", "_").trim().toUpperCase();
 			try {
 				validarOperacao(operacao);
-				
 				return TipoOperacao.valueOf(operacao);
 			}
 			catch (Exception e) {
