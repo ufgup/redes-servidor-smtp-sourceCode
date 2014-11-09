@@ -1,19 +1,20 @@
 package br.ufg.inf.redes.interpretador;
 
 public enum TipoOperacao {
-	
+
 	EHLO(0),
-	HELO(1), 
-	RCPT_TO(2), 
+	HELO(1),
+	RCPT_TO(2),
 	MAIL_FROM(3),
-	SUBJECT(4), 
-	DATA(5);
-	
+	SUBJECT(4),
+	DATA(5),
+	EXIT(6);
+
 	public static String DATA_STARTS_WITH = "DATA";
-	
+
 	private TipoOperacao(int tipo) {
 	}
-	
+
 	private TipoOperacao(String tipo) {
 	}
 

@@ -36,6 +36,11 @@ public class SocketServerSMTP {
 
 			pw.println(retorno);
 
+			if(retorno.equals("BYE BYE")) {
+				socket.close(); // Fecha o socket do cliente
+				socket = serverSocket.accept(); //Aguarda uma nova solicitação de conexão;
+			}
+
 		}
 
 		socket.close();
