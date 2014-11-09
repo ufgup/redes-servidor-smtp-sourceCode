@@ -1,41 +1,46 @@
 package br.ufg.inf.redes.socket;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 import br.ufg.inf.redes.interpretador.Interpretador;
 
 public class SocketServerSMTP {
 
 	private static final int PORTA = 14440;
-	private byte[] buffer = new byte[1024];
-	private static Interpretador interpretador = new Interpretador();
-	private DatagramSocket socketServidor;
+	private ServerSocket serverSocket;
+	private Interpretador interpretador;
+	private boolean parado = false;
 
 	private void iniciar() throws IOException {
 
-		socketServidor = new DatagramSocket( PORTA );
+		serverSocket = new ServerSocket( PORTA );
+		interpretador = new Interpretador();
+		Socket socket = serverSocket.accept();
 
-		while(true) {
-			DatagramPacket pacoteRecebido = new DatagramPacket(buffer, buffer.length);
-			socketServidor.receive( pacoteRecebido );
+		while(! parado) {
 
-			String comando = pacoteRecebido.getData().toString();
+			InputStreamReader input = new InputStreamReader(socket.getInputStream());
+			BufferedReader br = new BufferedReader(input);
+			String comando = br.readLine();
 
 			String retorno = interpretador.receberComando(comando);
 
-			InetAddress endereco = pacoteRecebido.getAddress();
-			int porta = pacoteRecebido.getPort();
+			OutputStream os = socket.getOutputStream();
+			PrintWriter pw = new PrintWriter(os, true);
 
-			buffer = retorno.getBytes();
-
-			DatagramPacket pacoteEnviado = new DatagramPacket(buffer, buffer.length, endereco, porta);
-
-			socketServidor.send(pacoteEnviado);
+			pw.println(retorno);
 
 		}
+
+		socket.close();
+
+
 	}
 
 	public static void main( String[] args ) {
@@ -47,6 +52,6 @@ public class SocketServerSMTP {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 }

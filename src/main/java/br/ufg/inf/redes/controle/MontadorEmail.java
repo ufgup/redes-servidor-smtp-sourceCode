@@ -1,7 +1,10 @@
 package br.ufg.inf.redes.controle;
 
+import java.io.IOException;
+
 import br.ufg.inf.redes.entidades.Email;
 import br.ufg.inf.redes.persistencia.GeradorProperties;
+import exception.ComandoInvalidoException;
 
 public class MontadorEmail {
 
@@ -11,7 +14,7 @@ public class MontadorEmail {
 		mail = new Email();
 	}
 
-	public void receberConteudo(String comando, String argumento) throws Exception {
+	public void receberConteudo(String comando, String argumento) throws ComandoInvalidoException {
 
 		switch (comando) {
 		case "RCPT TO":
@@ -30,7 +33,11 @@ public class MontadorEmail {
 			if( mail.estaProntoParaEnviar() ) {
 				if( mail.identificarDominio( mail.getDestinatario() ) ) {
 					GeradorProperties gp = new GeradorProperties();
-					gp.gravarLocal(mail);
+					try {
+						gp.gravarLocal(mail);
+					} catch (IOException e) {
+						//deu problema ao gravar o properties
+					}
 				}
 				else {
 					// aqui vai reencaminhar para o proximo servidor SMTP.
@@ -38,7 +45,7 @@ public class MontadorEmail {
 			}
 			break;
 		default:
-			throw new Exception("Comando desconhecido!");
+			throw new ComandoInvalidoException();
 		}
 
 	}

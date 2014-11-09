@@ -1,0 +1,101 @@
+Versao: 0.01
+Por: Bruno Nogueira de Oliveira
+
+=== Comandos SMTP disponibilizados no servidor ===
+
+A seguir disponibilizo os comandos que deverão ser interpretados pelo
+servidor SMTP;
+
+-----------------------------------------------------------------------------
+EHLO:
+Identifica, com a ajuda do endereco IP ou do nome de domínio do computador
+remetente.
+Exemplo:
+EHLO 10.8.0.2
+
+Paramatros de aceitação do comando:
+* Especificar
+
+
+------------------------------------------------------------------------------
+MAIL FROM:
+Identificação do endereço do remetente:
+Exemplo:
+MAIL FROM: goku@grupo8.inf.ufg.br
+
+Parametros de aceitação do comando:
+1 - Esse comando é submetido ao servidor ao precionar a tecla enter;
+* Especificar
+
+
+-----------------------------------------------------------------------------
+RCPT TO:
+Identificação do endereço do destinatário:
+Exemplo:
+RCPT TO: kuririn@grupo8.inf.ufg.br
+
+Parametros de aceitação do comando:
+1 - Esse comando é submetido ao servidor quando precisonado a tecla enter;
+* Especificar
+
+
+----------------------------------------------------------------------------
+DATA
+Identifica o corpo do email
+Exemplo:
+DATA 
+Oi, eu sou o Goku! [...]
+
+Parametros da aceitação do comando:
+1 - Esse comando não tem o limitador de campos 'dois pontos' [:]
+
+2 - Uma vez que esse comando é lançado, o sistema deve permitir o usuário
+digitar o quanto quiser até que seja inserido uma linha com um ponto seguida
+de um enter. 
+
+Exemplo:
+DATA 
+Oi, eu sou o Goku!
+.
+
+3 - Esse comando aceita que várias quebras de linha sejam inseridas no 
+seu corpo
+
+* Especificar
+
+----------------------------------------------------------------------------
+SUBJECT:
+Identifica o assunto da mensagem.
+Exemplo:
+SUBJECT: Dragon Ball Z
+
+Parametros de aceitação do comando:
+1 - Comando termina ao pressionar a tecla enter;
+
+* Especificar
+
+----------------------------------------------------------------------------
+QUIT 
+Finaliza a sessão com o servidor SMTP
+EXEMPLO:
+QUIT 
+
+Parametros de aceitação do comando:
+1 - Esse comando é submetido ao servidor ao precionar a tecla enter
+
+2 - Esse comando não recebe parametros
+
+* Especificar
+
+----------------------------------------------------------------------------
+HELP 
+Lista dos comandos SMTP suportadas pelo servidor.
+Exemplo:
+HELP
+
+Parametros de aceitaçaõ do comando:
+1 - Esse comando é submetido ao servidor ao precionar a tecla enter
+
+2 - Esse comando retorna, por conveniencia, esse documento
+
+* Especificar
