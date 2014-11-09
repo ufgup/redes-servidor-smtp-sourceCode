@@ -25,10 +25,10 @@ public class MontadorEmail {
 			mail.setRemetente(argumento);
 			break;
 		case "DATA":
-			mail.setAssunto(argumento);
+			mail.setMensagem(argumento);
 			break;
 		case "SUBJECT":
-			mail.setMensagem(argumento);
+			mail.setAssunto(argumento);
 			break;
 		case "SEND":
 			if( mail.estaProntoParaEnviar() ) {
