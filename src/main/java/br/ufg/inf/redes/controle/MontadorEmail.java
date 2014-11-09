@@ -5,6 +5,7 @@ import java.io.IOException;
 import br.ufg.inf.redes.entidades.Email;
 import br.ufg.inf.redes.persistencia.GeradorProperties;
 import exception.ComandoInvalidoException;
+import exception.FalhaEncaminhamentoException;
 
 public class MontadorEmail {
 
@@ -14,7 +15,7 @@ public class MontadorEmail {
 		mail = new Email();
 	}
 
-	public void receberConteudo(String comando, String argumento) throws ComandoInvalidoException {
+	public void receberConteudo(String comando, String argumento) throws Exception {
 
 		switch (comando) {
 		case "RCPT TO":
@@ -31,16 +32,16 @@ public class MontadorEmail {
 			break;
 		case "SEND":
 			if( mail.estaProntoParaEnviar() ) {
-				if( mail.identificarDominio( mail.getDestinatario() ) ) {
-					GeradorProperties gp = new GeradorProperties();
-					try {
-						gp.gravarLocal(mail);
-					} catch (IOException e) {
-						//deu problema ao gravar o properties
-					}
+
+				GeradorProperties gp = new GeradorProperties();
+				gp.gravarLocalSender(mail);
+
+				if( mail.identificarDominio( mail.getDestinatario() ).equals("localhost") ) {
+					gp.gravarLocalReceiver(mail);
 				}
 				else {
-					// aqui vai reencaminhar para o proximo servidor SMTP.
+					Reencaminhador re = new Reencaminhador();
+					re.encaminharParaOutroSMTP(mail);
 				}
 			}
 			break;

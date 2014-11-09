@@ -73,13 +73,11 @@ public class Email {
 		return false;
 	}
 
-	public boolean identificarDominio(String email) {
+	public String identificarDominio(String email) {
 
 		String[] values = email.split("@", 2);
-		if (values[1].equals("grupo8.inf.ufg.br"))
-			return true;
+		return values[2];
 
-		return false;
 	}
 
 	@Override

@@ -1,70 +1,76 @@
 package br.ufg.inf.redes.controle;
 
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 
 import br.ufg.inf.redes.entidades.Email;
 
 public class Reencaminhador {
-	
-	//autenticação do Yahoo
-	private String username = "testedeenvioemail@yahoo.com";
-	private String password = "ZGFuaWVsbWVsb2dwaUBnbWFpbC5jb20=";
-	private String yahooHost = "smtp.mail.yahoo.com";
 
-	public boolean encaminharParaOutroSMTP(Email email) {
+	static byte[] buffer = new byte[4096];
 
-		  String to = email.getDestinatario();//change accordingly
-	      String from = email.getRemetente();//change accordingly
-	      Properties props = getProperties();
+	public void encaminharParaOutroSMTP(Email email) throws Exception {
 
-	      // Get the Session object.
-	      Session session = Session.getInstance(props,
-	      new javax.mail.Authenticator() {
-	         protected PasswordAuthentication getPasswordAuthentication() {
-	            return new PasswordAuthentication(username, password);
-	         }
-	      });
-	      
-	      session.setDebug(true);
+		String mxSender = email.identificarDominio(email.getDestinatario());
 
-	      try {
-	         Message message = getMessage(email, to, from, session);
-	         Transport.send(message);
-	         return true;
+		Socket socket = new Socket(
+				ListaServersSMTP.valueOf(mxSender).getHost(), 25);
 
-	      } catch (MessagingException e) {
-	            return false;
-	      }
-		
+		OutputStream paraServidor = socket.getOutputStream();
+		InputStream doServidor = socket.getInputStream();
+
+		buffer = "HELO".getBytes(); // Mandando um Hello para o servidor
+
+		paraServidor.write(buffer);
+
+		doServidor.read(buffer);
+
+		String resposta = new String(buffer);
+		if (!resposta.startsWith("250"))
+			throw new Exception("Falha no Helo");
+
+		buffer = ("MAIL FROM: " + email.getRemetente()).getBytes();
+		paraServidor.write(buffer);
+
+		resposta = new String(buffer);
+		if (!resposta.startsWith("250"))
+			throw new Exception("Falha no MAIL FROM");
+
+		buffer = ("RCPT TO: " + email.getDestinatario()).getBytes();
+		paraServidor.write(buffer);
+
+		resposta = new String(buffer);
+		if (!resposta.startsWith("250"))
+			throw new Exception("Falha no RCPT TO");
+
+		buffer = "data".getBytes();
+		paraServidor.write(buffer);
+
+		resposta = new String(buffer);
+		if (!resposta.startsWith("354"))
+			throw new Exception("Falha no inicio do DATA");
+
+		buffer = ("from: " + email.getRemetente() +
+					"\nto: " + email.getDestinatario() +
+					"\nsubject: " + email.getAssunto() +
+					"\n" + email.getMensagem() +
+					"\n.\n\n").getBytes();
+
+		paraServidor.write(buffer);
+
+		resposta = new String(buffer);
+		if(! resposta.startsWith("250") )
+			throw new Exception("Falha no envio da mensagem");
+
+
+		buffer = "quit".getBytes();
+		paraServidor.write(buffer);
+
+		resposta = new String(buffer);
+		if(! resposta.startsWith("250") )
+			throw new Exception("Falha ao fechar conexão remota");
+
 	}
 
-	private Message getMessage(Email email, String to, String from, Session session) 
-	throws MessagingException, AddressException {
-		
-		Message message = new MimeMessage(session);
-		message.setFrom(new InternetAddress(from));
-		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-		message.setSubject(email.getAssunto());
-		message.setText(email.getMensagem());
-		
-		return message;
-	}
-
-	private Properties getProperties() {
-		Properties props = new Properties();
-		props.put("mail.smtp.host", yahooHost);
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.port", "587");
-		return props;
-	}
 }

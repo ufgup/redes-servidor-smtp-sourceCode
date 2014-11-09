@@ -17,7 +17,7 @@ public class GeradorProperties {
 		this.props = PropertiesManipulador.criarProperties(mail);
 	}
 
-	public void gravarLocal(Email mail) throws IOException {
+	public void gravarLocalSender(Email mail) throws IOException {
 
 		gerarProperties(mail);
 
@@ -37,6 +37,16 @@ public class GeradorProperties {
 
 		salvarProperties( caminho.toString() );
 
+
+
+	}
+
+	public void gravarLocalReceiver(Email mail) throws IOException {
+
+		gerarProperties(mail);
+
+		StringBuilder caminho = new StringBuilder();
+
 		caminho = new StringBuilder();
 
 		caminho.append( CAMINHO_PADRAO );
@@ -50,7 +60,6 @@ public class GeradorProperties {
 		caminho.append(".properties");
 
 		salvarProperties( caminho.toString() );
-
 	}
 
 	private String identificarNome(String keyPropertie) {
