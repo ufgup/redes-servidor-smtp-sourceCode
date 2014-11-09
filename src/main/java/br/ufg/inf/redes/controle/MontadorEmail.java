@@ -32,18 +32,16 @@ public class MontadorEmail {
 
 				GeradorProperties gp = new GeradorProperties();
 				gp.gravarLocalSender(mail);
-				gp.gravarLocalReceiver(mail);
 
-//				/* Infelizmente a implementação não funcionou */
-//				String destinatario = mail.identificarDominio( mail.getDestinatario() );
-//
-//				if( destinatario.equals("localhost") ) {
-//					gp.gravarLocalReceiver(mail);
-//				}
-//				else {
-//					Reencaminhador re = new Reencaminhador();
-//					re.encaminharParaOutroSMTP(mail);
-//				}
+				String destinatario = mail.identificarDominio( mail.getDestinatario() );
+
+				if( destinatario.equals("localhost") ) {
+					gp.gravarLocalReceiver(mail);
+				}
+				else {
+					Reencaminhador re = new Reencaminhador();
+					re.encaminharParaOutroSMTP(mail);
+				}
 			}
 			break;
 		default:
