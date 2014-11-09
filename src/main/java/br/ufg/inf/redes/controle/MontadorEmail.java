@@ -36,7 +36,9 @@ public class MontadorEmail {
 				GeradorProperties gp = new GeradorProperties();
 				gp.gravarLocalSender(mail);
 
-				if( mail.identificarDominio( mail.getDestinatario() ).equals("localhost") ) {
+				String destinatario = mail.identificarDominio( mail.getDestinatario() );
+
+				if( destinatario.equals("localhost") ) {
 					gp.gravarLocalReceiver(mail);
 				}
 				else {

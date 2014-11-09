@@ -10,7 +10,7 @@ import br.ufg.inf.redes.persistencia.utilitarios.PropertiesManipulador;
 
 public class GeradorProperties {
 
-	private static final String CAMINHO_PADRAO = "~/emails/";
+	private static final String CAMINHO_PADRAO = "/var/mail/";
 	private Properties props;
 
 	private void gerarProperties(Email mail) {
@@ -28,7 +28,7 @@ public class GeradorProperties {
 
 		criaDiretorios( caminho.toString() );
 
-		caminho.append("/enviados");
+		caminho.append("/enviados/");
 
 		criaDiretorios( caminho.toString() );
 
@@ -36,8 +36,6 @@ public class GeradorProperties {
 		caminho.append(".properties");
 
 		salvarProperties( caminho.toString() );
-
-
 
 	}
 
@@ -52,7 +50,7 @@ public class GeradorProperties {
 		caminho.append( CAMINHO_PADRAO );
 		caminho.append( identificarNome("mail.destinatario") );
 
-		caminho.append("/entrada");
+		caminho.append("/entrada/");
 
 		criaDiretorios( caminho.toString() );
 

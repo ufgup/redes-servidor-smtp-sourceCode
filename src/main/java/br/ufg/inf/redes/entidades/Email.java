@@ -76,7 +76,7 @@ public class Email {
 	public String identificarDominio(String email) {
 
 		String[] values = email.split("@", 2);
-		return values[2];
+		return values[1].toString();
 
 	}
 

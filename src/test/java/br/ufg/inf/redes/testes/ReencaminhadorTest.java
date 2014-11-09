@@ -8,17 +8,16 @@ import br.ufg.inf.redes.controle.Reencaminhador;
 import br.ufg.inf.redes.entidades.Email;
 
 public class ReencaminhadorTest {
-	
+
 	@Test
-	public void reencaminharTest() {
+	public void reencaminharTest() throws Exception {
 		Reencaminhador reencaminhador = new Reencaminhador();
 		Email email = new Email();
 		email.setRemetente("testedeenvioemail@yahoo.com");
 		email.setDestinatario("danielmelogpi@gmail.com");
 		email.setAssunto("Assunto do email" + Math.random());
 		email.setMensagem("Minha mensagem " + getLoremIpsum());
-		boolean envio = reencaminhador.encaminharParaOutroSMTP(email);
-		assertTrue(envio);
+		reencaminhador.encaminharParaOutroSMTP(email);
 	}
 
 	private String getLoremIpsum() {
