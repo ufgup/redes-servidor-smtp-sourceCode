@@ -1,11 +1,8 @@
 package br.ufg.inf.redes.controle;
 
-import java.io.IOException;
-
 import br.ufg.inf.redes.entidades.Email;
 import br.ufg.inf.redes.persistencia.GeradorProperties;
 import exception.ComandoInvalidoException;
-import exception.FalhaEncaminhamentoException;
 
 public class MontadorEmail {
 
@@ -35,16 +32,18 @@ public class MontadorEmail {
 
 				GeradorProperties gp = new GeradorProperties();
 				gp.gravarLocalSender(mail);
+				gp.gravarLocalReceiver(mail);
 
-				String destinatario = mail.identificarDominio( mail.getDestinatario() );
-
-				if( destinatario.equals("localhost") ) {
-					gp.gravarLocalReceiver(mail);
-				}
-				else {
-					Reencaminhador re = new Reencaminhador();
-					re.encaminharParaOutroSMTP(mail);
-				}
+//				/* Infelizmente a implementação não funcionou */
+//				String destinatario = mail.identificarDominio( mail.getDestinatario() );
+//
+//				if( destinatario.equals("localhost") ) {
+//					gp.gravarLocalReceiver(mail);
+//				}
+//				else {
+//					Reencaminhador re = new Reencaminhador();
+//					re.encaminharParaOutroSMTP(mail);
+//				}
 			}
 			break;
 		default:
